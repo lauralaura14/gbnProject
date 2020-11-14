@@ -35,6 +35,6 @@ public class Packet {
     }
 
     public String toString() {
-        return "Sequqnce Number: + " + this.seqNum + "\nMsg: " + this.msg;
+        return "Sequence Number: + " + this.seqNum + "\nMsg: " + this.msg;
     }
 }
