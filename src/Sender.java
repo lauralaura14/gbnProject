@@ -1,4 +1,3 @@
-
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -112,7 +111,7 @@ public class Sender {
 
                         if (currentSeqNum == eachRoundCompare) {
                             try {
-                                ds.setSoTimeout(2000); //arbitrary milliseconds
+                                ds.setSoTimeout(2000); //if ACK not received within this timeframe, then timeout.
                                 ds.receive(ack);
                                 System.out.println(ack.getData());
                                 break; //break out of first while-loop to return to while(true)
