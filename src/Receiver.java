@@ -82,12 +82,13 @@ public class Receiver {
                 //if (pseudoNum < userNum) {
                 //    ++ackLoss; //keep count of total packet losses
                 //} else {
+
                 //loop through arraylist of packets
                 for (int i = 0; i <= count; ++i) {
 
                     if (packetsList.get(i).getSeqNum() == ackFind) { //get packet seq num
                         String ackString = "ACK " + packetsList.get(i).getSeqNum(); //string: ACK [seq Num]
-                        byte[] ackByte = ackString.getBytes(); //convert to bytes
+                        byte[] ackByte = ackString.getBytes(); //convert ackString to bytes
                         ack = new DatagramPacket(ackByte, ackByte.length, ip, 8888); //attempted to create new Datagram packet of ackByte
                         ds.send(ack);
                     }
