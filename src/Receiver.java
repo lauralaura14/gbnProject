@@ -90,7 +90,7 @@ public class Receiver {
                 //} else {
 
                 //loop through arraylist of packets
-                for (int i = 0; i <= count; ++i) {
+                for (int i = 0; i < count; ++i) {
                     if (packetsList.get(i).getSeqNum() == ackFind) { //get packet seq num
                         //if the seq num is false, it means this is a lost packet
                         if (packetsList.get(i).getExist() == false) {
