@@ -66,8 +66,8 @@ public class Receiver {
 
             //must account for lost packets -- do not know how to do this
             while (count < eachRoundCompare) {
-                ds.setSoTimeout(20000); //if exceed this timeframe, then timeout
                 try {
+                    ds.setSoTimeout(20000); //if exceed this timeframe, then timeout
                     ds.receive(DpReceive);// retrieve data
                     packet = new Packet(count, true);
                     System.out.println(packet.getSeqNum() + " received"); //"[seq num] received"

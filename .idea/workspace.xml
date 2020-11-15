@@ -11,7 +11,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cc5840c9-7f3c-4b64-b63c-876873759430" name="Default Changelist" comment="Updated Receiver and Packet">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Receiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Receiver.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -33,7 +32,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="org.jetbrains.plugins.github.ui.GithubSettingsConfigurable" />
   </component>
-  <component name="RunManager" selected="Application.Sender">
+  <component name="RunManager" selected="Application.Receiver">
     <configuration name="Receiver" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Receiver" />
       <module name="gbnProject" />
@@ -50,8 +49,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Sender" />
         <item itemvalue="Application.Receiver" />
+        <item itemvalue="Application.Sender" />
       </list>
     </recent_temporary>
   </component>
@@ -74,7 +73,14 @@
       <option name="project" value="LOCAL" />
       <updated>1605408320963</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Updated Receiver and Packet">
+      <created>1605408809715</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1605408809715</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -131,10 +137,10 @@
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state x="2104" y="85" key="MergeDialog/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1605407180528" />
-    <state x="2472" y="252" key="Vcs.Push.Dialog.v2" timestamp="1605408341404">
+    <state x="2472" y="252" key="Vcs.Push.Dialog.v2" timestamp="1605408820365">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state x="2472" y="252" key="Vcs.Push.Dialog.v2/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1605408341404" />
+    <state x="2472" y="252" key="Vcs.Push.Dialog.v2/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1605408820365" />
     <state x="2697" y="433" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1605407144192">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
