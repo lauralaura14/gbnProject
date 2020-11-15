@@ -71,7 +71,7 @@ public class Receiver {
                     ds.setSoTimeout(20000); //if exceed this timeframe, then timeout
                     ds.receive(DpReceive);// retrieve data
                     String msg = new String(DpReceive.getData(), DpReceive.getOffset(), DpReceive.getLength());// to format the bytes back into strings
-                    //System.out.println("Received text = " + msg);
+                    System.out.println("Received text = " + msg);
 
                     Files.writeString(outputFile, msg); //write into Output.txt
 

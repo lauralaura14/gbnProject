@@ -10,6 +10,7 @@ import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
@@ -55,7 +56,7 @@ public class Sender {
         totalPackets = totalBytes.length / max; //total # of packets in file
         System.out.println("Total Packets: " + totalPackets);
 
-        //ArrayList<Packet> packetList = new ArrayList<>(); //new list of all packets
+        ArrayList<Packet> lostList = new ArrayList<>(); //new list of lost packets
         byte[] ackBytes = new byte[200]; //arbitrary number for ACK bytes
 
         DatagramPacket ack = new DatagramPacket(ackBytes, ackBytes.length); //create new Datagram packet for ACK coming in
@@ -74,10 +75,9 @@ public class Sender {
             userNum = packetLossSim();
 
             while (true) {
-                int pseudoNum = new Random(System.currentTimeMillis()).nextInt(100); //pseudonumber generated using random seed set to current system time
                 int eachRoundCompare = currentSeqNum + windowSize;
                 //System.out.println(currentSeqNum);
-                while (currentSeqNum <= eachRoundCompare && currentSeqNum < totalPackets) {  //should not exceed window size
+                while (currentSeqNum < eachRoundCompare && currentSeqNum < totalPackets) {  //should not exceed window size and total # of packets
                     data = new byte[max];
                     startIndex = max * currentSeqNum;
                     endIndex = startIndex + max;
@@ -98,10 +98,12 @@ public class Sender {
                     } else {
                         buf.rewind();
                         pkt = new DatagramPacket(data, max, ip, 8888);
-
-                        if (pseudoNum < userNum) {
+                        int pseudoNum = new Random(System.currentTimeMillis()).nextInt(100); //pseudonumber generated using random seed set to current system time (within 100)
+                        if (userNum < pseudoNum) {
+                            System.out.println("\nUsernum: " + userNum + " PseudoNum: " + pseudoNum);
                             ++packetLoss; //keep count of total packet losses
                             lostSeqNum = currentSeqNum;
+                            System.out.println("\nLost Seq: " + lostSeqNum + " Current: " + currentSeqNum);
                         } else {
                             ds.send(pkt);
                             System.out.println("Sent packet #: " + currentSeqNum);
@@ -110,21 +112,34 @@ public class Sender {
 
                         ++currentSeqNum; //regardless of whether successfully sent or lost, increase the seq number to keep going
 
-                        if (currentSeqNum == eachRoundCompare) {
-                            try {
-                                ds.setSoTimeout(2000); //if ACK not received within this timeframe, then timeout.
-                                ds.receive(ack);
-                                String msg = new String(ack.getData(), ack.getOffset(), ack.getLength());
-                                System.out.println("ACK Received: " + msg);
-                                break; //break out of first while-loop to return to while(true)
-                            } catch (SocketTimeoutException e) {
-                                System.out.println("Timeout error, resend packets from: " + lostSeqNum);
-                                currentSeqNum = lostSeqNum;
-                                break; //break out of first while-loop to return to while(true)
-                            }
-                        }
                     }
                 }
+
+                try {
+                    ds.setSoTimeout(2000); //if ACK not received within this timeframe, then timeout.
+                    ds.receive(ack);
+                    String msg = new String(ack.getData(), ack.getOffset(), ack.getLength());
+                    System.out.println("ACK Received: " + msg);
+                    break; //break out of first while-loop to return to while(true)
+                } catch (SocketTimeoutException e) {
+                    System.out.println("Timeout error, resend packets from: " + lostSeqNum);
+                    //not part of the eachRoundCompare while loop to prevent a 2nd round of packet loss with the userNum & pseudoNum
+                    for (int i = lostSeqNum; i < (lostSeqNum + (windowSize - 1)); ++i) {
+                        data = new byte[max];
+                        startIndex = max * i;
+                        endIndex = startIndex + max;
+                        data = Arrays.copyOfRange(totalBytes, startIndex, endIndex); //get bytes for the current packet from totalBytes
+                        buf = ByteBuffer.wrap(data);
+                        buf.clear();
+                        bytesRead = bis.read(data);
+                        buf.rewind();
+                        pkt = new DatagramPacket(data, max, ip, 8888);
+                        ds.send(pkt);
+                        System.out.println("Sent packet #: " + lostSeqNum);
+                        ++totalPacketsSent;
+                    }
+                }
+               //break; //break out of first while-loop to return to while(true)
             }
         } finally {
             System.out.println("Goodbye!");
