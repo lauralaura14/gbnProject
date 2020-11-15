@@ -56,7 +56,7 @@ public class Sender {
         totalPackets = totalBytes.length / max; //total # of packets in file
         System.out.println("Total Packets: " + totalPackets);
 
-        ArrayList<Packet> lostList = new ArrayList<>(); //new list of lost packets
+        ArrayList<Integer> lostList = new ArrayList<>(); //new list of lost packet seq nums
         byte[] ackBytes = new byte[200]; //arbitrary number for ACK bytes
 
         DatagramPacket ack = new DatagramPacket(ackBytes, ackBytes.length); //create new Datagram packet for ACK coming in
@@ -103,6 +103,7 @@ public class Sender {
                             System.out.println("\nUsernum: " + userNum + " PseudoNum: " + pseudoNum);
                             ++packetLoss; //keep count of total packet losses
                             lostSeqNum = currentSeqNum;
+                            lostList.add(lostSeqNum);
                             System.out.println("\nLost Seq: " + lostSeqNum + " Current: " + currentSeqNum);
                         } else {
                             ds.send(pkt);
@@ -122,11 +123,12 @@ public class Sender {
                     System.out.println("ACK Received: " + msg);
                     break; //break out of first while-loop to return to while(true)
                 } catch (SocketTimeoutException e) {
+
                     System.out.println("Timeout error, resend packets from: " + lostSeqNum);
-                    //not part of the eachRoundCompare while loop to prevent a 2nd round of packet loss with the userNum & pseudoNum
-                    for (int i = lostSeqNum; i < (lostSeqNum + (windowSize - 1)); ++i) {
+                    //not part of the eachRoundCompare while loop to prevent a 2nd round of packet loss with the userNum & pseudoNum{
+                    for (int i = 0; i < windowSize; ++i) {
                         data = new byte[max];
-                        startIndex = max * i;
+                        startIndex = max * lostList.get(0);
                         endIndex = startIndex + max;
                         data = Arrays.copyOfRange(totalBytes, startIndex, endIndex); //get bytes for the current packet from totalBytes
                         buf = ByteBuffer.wrap(data);
@@ -137,6 +139,7 @@ public class Sender {
                         ds.send(pkt);
                         System.out.println("Sent packet #: " + lostSeqNum);
                         ++totalPacketsSent;
+                        lostList.remove(0);
                     }
                 }
                //break; //break out of first while-loop to return to while(true)

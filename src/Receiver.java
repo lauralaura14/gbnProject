@@ -24,25 +24,6 @@ public class Receiver {
     private static ByteBuffer buf;
     private static Path outputFile;
 
-    //same thing as Sender -- probability for ACK loss. -- don't think this is needed
-
-    /**
-     * public static int ackLossSim() {
-     * user inputs number 0-99
-     * Scanner reader = new Scanner(System.in);
-     * do {
-     * System.out.println("Please enter a number from 0-99:");
-     * userNum = Integer.parseInt(reader.nextLine());
-     * if (userNum < 0 || userNum > 99) {
-     * System.out.println("Invalid. Please enter a number from 0-99: \n");
-     * testNum = -1;   //wrong input = loop again
-     * } else if (userNum >= 0 && userNum <= 99) {
-     * return userNum;
-     * }
-     * } while (userNum >= 0 && userNum <= 99 || testNum == -1);
-     * return userNum;
-     * }
-     */
 
     public static void main(String[] args) throws IOException {
 //        File destfile = new File("hello.txt");
@@ -86,14 +67,7 @@ public class Receiver {
 
             //if end of frame, send ACK for first packet of frame
             if (count == eachRoundCompare) {
-                //userNum = ackLossSim();
                 int ackFind = count - windowSize; //get to first packet of frame
-
-                int pseudoNum = new Random(System.currentTimeMillis()).nextInt();
-
-                //if (pseudoNum < userNum) {
-                //    ++ackLoss; //keep count of total packet losses
-                //} else {
 
                 //loop through arraylist of packets
                 for (int i = 0; i < count; ++i) {
