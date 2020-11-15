@@ -66,7 +66,7 @@ public class Receiver {
 
             //must account for lost packets -- do not know how to do this
             while (count < eachRoundCompare) {
-                ds.setSoTimeout(2000); //if exceed this timeframe, then timeout
+                ds.setSoTimeout(20000); //if exceed this timeframe, then timeout
                 try {
                     ds.receive(DpReceive);// retrieve data
                     packet = new Packet(count, true);
@@ -75,6 +75,7 @@ public class Receiver {
                 } catch (SocketTimeoutException e) {
                     packet = new Packet(count, false);
                 }
+                ++count;
             }
 
             //if end of frame, send ACK for first packet of frame
