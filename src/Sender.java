@@ -50,7 +50,7 @@ public class Sender {
     }
 
     public static void main(String args[]) throws IOException {
-        byte[] totalBytes = Files.readAllBytes(Paths.get("test.txt")); //convert entire file to bytes
+        byte[] totalBytes = Files.readAllBytes(Paths.get("../test.txt")); //convert entire file to bytes
 
         totalPackets = totalBytes.length / max; //total # of packets in file
         System.out.println("Total Packets: " + totalPackets);
@@ -64,7 +64,7 @@ public class Sender {
             DatagramSocket ds = new DatagramSocket();
             InetAddress ip = InetAddress.getLocalHost();
             DatagramPacket pkt;
-            File file = new File("test.txt");
+            File file = new File("../test.txt");
             FileInputStream fis = new FileInputStream(file);
             BufferedInputStream bis = new BufferedInputStream(fis);
 

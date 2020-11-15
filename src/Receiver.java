@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Random;
@@ -68,12 +69,11 @@ public class Receiver {
                 ds.setSoTimeout(2000); //if exceed this timeframe, then timeout
                 try {
                     ds.receive(DpReceive);// retrieve data
-                    packet = new Packet(count, DpReceive.getData(), true);
-                    System.out.println(packet.getSeqNum() + "received"); //"[seq num] received"
+                    packet = new Packet(count, true);
+                    System.out.println(packet.getSeqNum() + " received"); //"[seq num] received"
                     packetsList.add(packet); //add packet to list
-                } catch (IOException e) {
-                    DpReceive = null;
-                    packet = new Packet(count, DpReceive.getData(), false);
+                } catch (SocketTimeoutException e) {
+                    packet = new Packet(count, false);
                 }
             }
 
