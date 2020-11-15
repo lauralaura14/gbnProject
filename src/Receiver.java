@@ -18,9 +18,6 @@ public class Receiver {
     private static int ackCount = 0;
     private static int max = 200;
     private static byte[] data;
-    private static int userNum;
-    private static int testNum;
-    private static int ackLoss;
     private static ByteBuffer buf;
     private static Path outputFile;
 
