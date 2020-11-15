@@ -1,7 +1,4 @@
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -23,6 +20,7 @@ public class Receiver {
     private static int testNum;
     private static int ackLoss;
     private static ByteBuffer buf;
+    private static BufferedWriter writer;
 
     //same thing as Sender -- probability for ACK loss. -- don't think this is needed
 
@@ -69,6 +67,12 @@ public class Receiver {
                 try {
                     ds.setSoTimeout(20000); //if exceed this timeframe, then timeout
                     ds.receive(DpReceive);// retrieve data
+                    String msg = new String(DpReceive.getData(), DpReceive.getOffset(), DpReceive.getLength());// to format the bytes back into strings
+                    System.out.println("Received text = " + msg);
+                    writer = new BufferedWriter(new FileWriter("../Output.txt"));
+                    writer.write(msg);
+
+
                     packet = new Packet(count, true);
                     System.out.println(packet.getSeqNum() + " received"); //"[seq num] received"
                     packetsList.add(packet); //add packet to list
@@ -94,7 +98,7 @@ public class Receiver {
                     if (packetsList.get(i).getSeqNum() == ackFind) { //get packet seq num
                         //if the seq num is false, it means this is a lost packet
                         if (packetsList.get(i).getExist() == false) {
-                        //do nothing; don't send ACK
+                            //do nothing; don't send ACK
                         } else {
                             String ackString = "ACK " + packetsList.get(i).getSeqNum(); //string: ACK [seq Num]
                             byte[] ackByte = ackString.getBytes(); //convert ackString to bytes
@@ -112,6 +116,8 @@ public class Receiver {
             //buff.clear();
             //buff.rewind(); //reset buffer
 //            break;// If we want the server to close, we will have to trigger it with the packet headers
+
         }
     }
 }
+

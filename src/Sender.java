@@ -74,7 +74,7 @@ public class Sender {
             userNum = packetLossSim();
 
             while (true) {
-                int pseudoNum = new Random(System.currentTimeMillis()).nextInt(); //pseudonumber generated using random seed set to current system time
+                int pseudoNum = new Random(System.currentTimeMillis()).nextInt(100); //pseudonumber generated using random seed set to current system time
                 int eachRoundCompare = currentSeqNum + windowSize;
                 //System.out.println(currentSeqNum);
                 while (currentSeqNum <= eachRoundCompare && currentSeqNum < totalPackets) {  //should not exceed window size
@@ -104,6 +104,7 @@ public class Sender {
                             lostSeqNum = currentSeqNum;
                         } else {
                             ds.send(pkt);
+                            System.out.println("Sent packet #: " + currentSeqNum);
                             ++totalPacketsSent;
                         }
 
@@ -113,7 +114,8 @@ public class Sender {
                             try {
                                 ds.setSoTimeout(2000); //if ACK not received within this timeframe, then timeout.
                                 ds.receive(ack);
-                                System.out.println(ack.getData());
+                                String msg = new String(ack.getData(), ack.getOffset(), ack.getLength());
+                                System.out.println("ACK Received: " + msg);
                                 break; //break out of first while-loop to return to while(true)
                             } catch (SocketTimeoutException e) {
                                 System.out.println("Timeout error, resend packets from: " + lostSeqNum);
