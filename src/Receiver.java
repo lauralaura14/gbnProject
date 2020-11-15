@@ -4,6 +4,8 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -20,7 +22,7 @@ public class Receiver {
     private static int testNum;
     private static int ackLoss;
     private static ByteBuffer buf;
-    private static BufferedWriter writer;
+    private static Path outputFile;
 
     //same thing as Sender -- probability for ACK loss. -- don't think this is needed
 
@@ -54,6 +56,7 @@ public class Receiver {
         DatagramPacket DpReceive = null;
         DatagramPacket ack;
         ArrayList<Packet> packetsList = new ArrayList<>(); // list of all the packets
+        outputFile = Path.of("../Output.txt"); //output file created
 
         while (true) {
             System.out.println("Server is awaiting packets...");
@@ -68,10 +71,9 @@ public class Receiver {
                     ds.setSoTimeout(20000); //if exceed this timeframe, then timeout
                     ds.receive(DpReceive);// retrieve data
                     String msg = new String(DpReceive.getData(), DpReceive.getOffset(), DpReceive.getLength());// to format the bytes back into strings
-                    System.out.println("Received text = " + msg);
-                    writer = new BufferedWriter(new FileWriter("../Output.txt"));
-                    writer.write(msg);
+                    //System.out.println("Received text = " + msg);
 
+                    Files.writeString(outputFile, msg); //write into Output.txt
 
                     packet = new Packet(count, true);
                     System.out.println(packet.getSeqNum() + " received"); //"[seq num] received"
