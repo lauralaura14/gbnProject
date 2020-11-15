@@ -65,11 +65,16 @@ public class Receiver {
 
             //must account for lost packets -- do not know how to do this
             while (count < eachRoundCompare) {
-                ds.receive(DpReceive);// retrieve data
-                packet = new Packet(count, DpReceive.getData()); //attempted to create packet that takes in 
-                //count(represent seq Num) and getData for parameters
-                System.out.println(packet.getSeqNum() + "received"); //"[seq num] received"
-                packetsList.add(packet); //add packet to list
+                ds.setSoTimeout(2000); //if exceed this timeframe, then timeout
+                try {
+                    ds.receive(DpReceive);// retrieve data
+                    packet = new Packet(count, DpReceive.getData(), true);
+                    System.out.println(packet.getSeqNum() + "received"); //"[seq num] received"
+                    packetsList.add(packet); //add packet to list
+                } catch (IOException e) {
+                    DpReceive = null;
+                    packet = new Packet(count, DpReceive.getData(), false);
+                }
             }
 
             //if end of frame, send ACK for first packet of frame
@@ -85,12 +90,16 @@ public class Receiver {
 
                 //loop through arraylist of packets
                 for (int i = 0; i <= count; ++i) {
-
                     if (packetsList.get(i).getSeqNum() == ackFind) { //get packet seq num
-                        String ackString = "ACK " + packetsList.get(i).getSeqNum(); //string: ACK [seq Num]
-                        byte[] ackByte = ackString.getBytes(); //convert ackString to bytes
-                        ack = new DatagramPacket(ackByte, ackByte.length, ip, 8888); //attempted to create new Datagram packet of ackByte
-                        ds.send(ack);
+                        //if the seq num is false, it means this is a lost packet
+                        if (packetsList.get(i).getExist() == false) {
+                        //do nothing; don't send ACK
+                        } else {
+                            String ackString = "ACK " + packetsList.get(i).getSeqNum(); //string: ACK [seq Num]
+                            byte[] ackByte = ackString.getBytes(); //convert ackString to bytes
+                            ack = new DatagramPacket(ackByte, ackByte.length, ip, 8888); //attempted to create new Datagram packet of ackByte
+                            ds.send(ack);
+                        }
                     }
                 }
             }
