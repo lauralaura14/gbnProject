@@ -12,10 +12,12 @@ public class Packet {
 
     private int seqNum;
     private byte[] msg;
+    private boolean exist;
 
-    public Packet(int seqNum, byte[] msg) {
+    public Packet(int seqNum, byte[] msg, boolean exist) {
         this.seqNum = seqNum;
         this.msg = msg;
+        this.exist = exist;
     }
 
     public void setSeqNum(int seqNum) {
@@ -34,7 +36,17 @@ public class Packet {
         return this.msg;
     }
 
+    //does this packet exist or is it empty due to loss
+    public void setExist() {
+        this.exist = exist;
+    }
+
+    public boolean getExist() {
+        return this.exist;
+    }
+
     public String toString() {
-        return "Sequence Number: + " + this.seqNum + "\nMsg: " + this.msg;
+        return "Sequence Number: + " + getSeqNum() + "\nMsg: " + getMsg()
+                + "\nExist: " + getExist();
     }
 }
