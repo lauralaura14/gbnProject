@@ -7,8 +7,6 @@ import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.Scanner;
 
 public class Receiver {
 
@@ -53,11 +51,11 @@ public class Receiver {
 
                     Files.writeString(outputFile, msg); //write into Output.txt
 
-                    packet = new Packet(count, true);
+                    packet = new Packet(count, DpReceive.getData(), true);
                     System.out.println(packet.getSeqNum() + " received"); //"[seq num] received"
                     packetsList.add(packet); //add packet to list
                 } catch (SocketTimeoutException e) {
-                    packet = new Packet(count, false);
+                    packet = new Packet(count, null, false);
                 }
                 ++count;
             }
@@ -73,10 +71,16 @@ public class Receiver {
                         if (packetsList.get(i).getExist() == false) {
                             //do nothing; don't send ACK
                         } else {
-                            String ackString = "ACK " + packetsList.get(i).getSeqNum(); //string: ACK [seq Num]
-                            byte[] ackByte = ackString.getBytes(); //convert ackString to bytes
-                            ack = new DatagramPacket(ackByte, ackByte.length, ip, 8888); //attempted to create new Datagram packet of ackByte
-                            ds.send(ack);
+                            String message = new String(packetsList.get(i).getMsg());// to format the bytes back into strings
+                            //System.out.println("Received text = " + msg);
+
+                            Files.writeString(outputFile, message); //write into Output.txt
+
+                            //Need to fix this -- sending ACK
+                            //String ackString = "ACK " + packetsList.get(i).getSeqNum(); //string: ACK [seq Num]
+                            //byte[] ackByte = ackString.getBytes(); //convert ackString to bytes
+                            //ack = new DatagramPacket(ackByte, ackByte.length, ip, 8888); //attempted to create new Datagram packet of ackByte
+                            //ds.send(ack);
                         }
                     }
                 }

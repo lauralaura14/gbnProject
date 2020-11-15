@@ -11,20 +11,18 @@
 public class Packet {
 
     private int seqNum;
-    //private byte[] msg;
+    private byte[] msg;
     private boolean exist;
 
-    /**
     public Packet(int seqNum, byte[] msg, boolean exist) {
         this.seqNum = seqNum;
         this.msg = msg;
         this.exist = exist;
     }
-     */
 
     public Packet(int seqNum, boolean exist) {
         this.seqNum = seqNum;
-        //this.msg = msg;
+        this.msg = msg;
         this.exist = exist;
     }
 
@@ -36,17 +34,13 @@ public class Packet {
         return this.seqNum;
     }
 
-    /**
     public void setMsg(byte[] msg) {
         this.msg = msg;
     }
-     */
 
-    /**
     public byte[] getMsg() {
         return this.msg;
     }
-     */
 
     //does this packet exist or is it empty due to loss
     public void setExist() {
