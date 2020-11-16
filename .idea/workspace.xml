@@ -13,6 +13,7 @@
     <list default="true" id="cc5840c9-7f3c-4b64-b63c-876873759430" name="Default Changelist" comment="Updated files">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Receiver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Receiver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Sender.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Sender.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -137,7 +138,14 @@
       <option name="project" value="LOCAL" />
       <updated>1605482025842</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Updated files">
+      <created>1605485739724</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1605485739724</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -195,10 +203,10 @@
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state x="2104" y="85" key="MergeDialog/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1605407180528" />
-    <state x="2472" y="252" key="Vcs.Push.Dialog.v2" timestamp="1605482032971">
+    <state x="2472" y="252" key="Vcs.Push.Dialog.v2" timestamp="1605485742196">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state x="2472" y="252" key="Vcs.Push.Dialog.v2/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1605482032971" />
+    <state x="2472" y="252" key="Vcs.Push.Dialog.v2/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1605485742196" />
     <state x="2697" y="433" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1605407144192">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>

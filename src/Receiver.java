@@ -30,7 +30,7 @@ public class Receiver {
         byte[] receive = new byte[4096];
         ByteBuffer buff = ByteBuffer.wrap(receive);
         DatagramPacket DpReceive = null;
-        byte[] sendAck = new byte[ 4096 ];
+        byte[] sendAck;
         DatagramPacket pk;
         ArrayList<Packet> packetsList = new ArrayList<>(); // list of all the packets
 
@@ -51,8 +51,6 @@ public class Receiver {
                     String message = new String(DpReceive.getData(), DpReceive.getOffset(), DpReceive.getLength());// to format the bytes back into strings
                     //System.out.println("Received text = " + msg);
 
-                    Files.writeString(outputFile, message); //write into Output.txt
-
                     packet = new Packet(count, DpReceive.getData(), true);
                     System.out.println(packet.getSeqNum() + " received"); //"[seq num] received"
                     packetsList.add(packet); //add packet to list
@@ -67,8 +65,8 @@ public class Receiver {
                 int ackFind = count - windowSize; //get to first packet of frame
 
                 //loop through arraylist of packets
-                for (int i = ackFind; i < count; ++i) {
-                    if (packetsList.get(i).getSeqNum() == ackFind) { //get packet seq num
+                for (int i = 0; i < packetsList.size(); ++i) {
+                    if (packetsList.get(i).getSeqNum() == ackFind) { //get packet seq num that needs ACK
                         //if the seq num is false, it means this is a lost packet
                         if (packetsList.get(i).getExist() == false) {
                             //do nothing; don't send ACK
@@ -83,7 +81,7 @@ public class Receiver {
                             String message = new String(packetsList.get(i).getMsg());// to format the bytes back into strings
                             //System.out.println("Received text = " + msg);
 
-                            Files.writeString(outputFile, message); //write into Output.txt
+                            Files.writeString(outputFile, message); //write the packet into the Output.txt after sending ACK
                         }
                     }
                 }

@@ -125,7 +125,7 @@ public class Sender {
                 } catch (SocketTimeoutException e) {
 
                     System.out.println("Timeout error, resend packets from: " + lostSeqNum);
-                    //not part of the eachRoundCompare while loop to prevent a 2nd round of packet loss with the userNum & pseudoNum{
+                    //not part of the eachRoundCompare while loop to prevent a 2nd round of packet loss with the userNum & pseudoNum
                     for (int i = 0; i < windowSize; ++i) {
                         data = new byte[max];
                         startIndex = max * lostList.get(0);
