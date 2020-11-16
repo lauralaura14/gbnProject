@@ -30,8 +30,10 @@ public class Receiver {
         byte[] receive = new byte[4096];
         ByteBuffer buff = ByteBuffer.wrap(receive);
         DatagramPacket DpReceive = null;
-        DatagramPacket ack;
+        byte[] sendAck = new byte[ 4096 ];
+        DatagramPacket pk;
         ArrayList<Packet> packetsList = new ArrayList<>(); // list of all the packets
+
         outputFile = Path.of("../Output.txt"); //output file created
 
         while (true) {
@@ -46,10 +48,10 @@ public class Receiver {
                 try {
                     ds.setSoTimeout(20000); //if exceed this timeframe, then timeout
                     ds.receive(DpReceive);// retrieve data
-                    String msg = new String(DpReceive.getData(), DpReceive.getOffset(), DpReceive.getLength());// to format the bytes back into strings
-                    System.out.println("Received text = " + msg);
+                    String message = new String(DpReceive.getData(), DpReceive.getOffset(), DpReceive.getLength());// to format the bytes back into strings
+                    //System.out.println("Received text = " + msg);
 
-                    Files.writeString(outputFile, msg); //write into Output.txt
+                    Files.writeString(outputFile, message); //write into Output.txt
 
                     packet = new Packet(count, DpReceive.getData(), true);
                     System.out.println(packet.getSeqNum() + " received"); //"[seq num] received"
@@ -65,22 +67,23 @@ public class Receiver {
                 int ackFind = count - windowSize; //get to first packet of frame
 
                 //loop through arraylist of packets
-                for (int i = 0; i < count; ++i) {
+                for (int i = ackFind; i < count; ++i) {
                     if (packetsList.get(i).getSeqNum() == ackFind) { //get packet seq num
                         //if the seq num is false, it means this is a lost packet
                         if (packetsList.get(i).getExist() == false) {
                             //do nothing; don't send ACK
                         } else {
+                            //Need to fix this -- sending ACK
+
+                            String ack ="ACK: " + i + "Received";
+                            sendAck = ack.getBytes();
+                            pk = new DatagramPacket(sendAck, sendAck.length, ip, 8888);
+                            ds.send(pk);
+
                             String message = new String(packetsList.get(i).getMsg());// to format the bytes back into strings
                             //System.out.println("Received text = " + msg);
 
                             Files.writeString(outputFile, message); //write into Output.txt
-
-                            //Need to fix this -- sending ACK
-                            //String ackString = "ACK " + packetsList.get(i).getSeqNum(); //string: ACK [seq Num]
-                            //byte[] ackByte = ackString.getBytes(); //convert ackString to bytes
-                            //ack = new DatagramPacket(ackByte, ackByte.length, ip, 8888); //attempted to create new Datagram packet of ackByte
-                            //ds.send(ack);
                         }
                     }
                 }
