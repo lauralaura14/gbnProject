@@ -27,7 +27,7 @@ public class Receiver {
 
         DatagramSocket ds = new DatagramSocket(8888);// open port to listen
         InetAddress ip = InetAddress.getLocalHost();
-        byte[] receive = new byte[4096];
+        byte[] receive = new byte[1024];
         ByteBuffer buff = ByteBuffer.wrap(receive);
         DatagramPacket DpReceive = null;
         byte[] sendAck;
@@ -98,4 +98,3 @@ public class Receiver {
         }
     }
 }
-
